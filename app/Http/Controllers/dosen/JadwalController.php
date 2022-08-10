@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\mahasiswa;
+namespace App\Http\Controllers\dosen;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Matakuliah;
+use App\Models\Jadwal;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Absen;
-use App\Models\Semester;
-use App\Models\Kontrak_mahasiswa;
 
-class MahasiswaController extends Controller
+class JadwalController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,13 +18,12 @@ class MahasiswaController extends Controller
      */
     public function index()
     {
-        $semester = Semester::where('is_active', 1)->first();
-        $data['title'] = "Absensi Mahasiswa";
+        $data['title'] = "Matakuliah";
         $data['user'] = AUTH::User();
-        $data['mhs'] = User::where('role', 'Mahasiswa')->get();
-        $data['mk'] = Kontrak_mahasiswa::where('users_id', $data['user']->id)->where('semester_id', $semester->id)->get();
+        $data['matakuliah'] = Matakuliah::all();
+        $data['jadwal'] = Jadwal::all();
 
-        return view('Mahasiswa.absenmhs', $data);
+        return view('dosen.jadwal', $data);
     }
 
     /**
@@ -45,7 +44,12 @@ class MahasiswaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       $save = new Jadwal;
+       $save->jadwal = $request->jadwal;
+       $save->matakuliah_id = $request->mk;
+       $save->save();
+
+       return redirect()->back();
     }
 
     /**
@@ -56,7 +60,8 @@ class MahasiswaController extends Controller
      */
     public function show($id)
     {
-        //
+        Jadwal::where('id', $id)->delete();
+        return redirect()->back();
     }
 
     /**
@@ -67,7 +72,9 @@ class MahasiswaController extends Controller
      */
     public function edit($id)
     {
-        //
+    
+        
+    
     }
 
     /**
@@ -79,7 +86,12 @@ class MahasiswaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        Jadwal::where('id', $id)->update([
+            'jadwal' => $request->jadwal,
+            'matakuliah_id' => $request->mk
+        ]);
+
+        return redirect()->back();
     }
 
     /**

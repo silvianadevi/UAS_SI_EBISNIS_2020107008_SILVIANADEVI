@@ -6,6 +6,7 @@ use App\Http\Controllers\dosen\AbsenController;
 use App\Http\Controllers\dosen\DosenController;
 use App\Http\Controllers\dosen\SemesterController;
 use App\Http\Controllers\dosen\MatakuliahController;
+use App\Http\Controllers\dosen\JadwalController;
 use App\Http\Controllers\dosen\KontrakMahasiswaController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\WelcomeController;
@@ -30,6 +31,7 @@ Route::middleware(['auth', 'dosen'])->group(function () {
     Route::resource('/kontrak_mahasiswa', KontrakMahasiswaController::class);
     Route::resource('/mahasiswa', DsnMahasiswaController::class);
     Route::resource('/matakuliah', MatakuliahController::class);
+    Route::resource('/jadwal', JadwalController::class);
     Route::get('/actionabsen/{user}/{id}', [AbsenController::class, 'create']);
 });
 Route::middleware(['auth'])->group(function () {
